@@ -48,6 +48,7 @@ import { BrandingSettings, getBrandingSettings, getTimingSettings, TimingSetting
 import LocationTracker from '@/components/location-tracker';
 import { useMapFlyTo, MapFlyToProvider } from '@/context/map-fly-to-context';
 import { ChatProvider } from '@/context/chat-context';
+import SupportModal from '@/components/support/support-modal';
 
 interface AppUser {
   id: string;
@@ -81,7 +82,7 @@ interface UserChatState {
     lastReadTimestamp?: Timestamp;
 }
 
-function DashboardHeader({ onProfileOpen, user, loading }: { onProfileOpen: () => void, user: AppUser | null, loading: boolean }) {
+function DashboardHeader({ onProfileOpen, onSupportOpen, user, loading }: { onProfileOpen: () => void, onSupportOpen: () => void, user: AppUser | null, loading: boolean }) {
   const router = useRouter();
 
   const handleLogout = () => {
@@ -121,7 +122,7 @@ function DashboardHeader({ onProfileOpen, user, loading }: { onProfileOpen: () =
             <Settings className="mr-2 h-4 w-4" />
             <span>Perfil</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem onSelect={onSupportOpen}>
             <HelpCircle className="mr-2 h-4 w-4" />
             <span>Soporte</span>
           </DropdownMenuItem>
@@ -142,6 +143,7 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [isChatOpen, setChatOpen] = useState(false);
   const [isProfileDialogOpen, setProfileDialogOpen] = useState(false);
+  const [isSupportModalOpen, setSupportModalOpen] = useState(false);
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [chatPartner, setChatPartner] = useState<AppUser | null>(null);
   const [branding, setBranding] = useState<BrandingSettings | null>(null);
@@ -449,6 +451,7 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
           <SidebarInset>
             <DashboardHeader 
               onProfileOpen={() => setProfileDialogOpen(true)}
+              onSupportOpen={() => setSupportModalOpen(true)}
               user={user}
               loading={authLoading}
             />
@@ -478,6 +481,13 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
                   onOpenChange={setProfileDialogOpen}
                   user={user}
                   onProfileUpdate={handleProfileUpdate}
+              />
+          )}
+          {user && (
+              <SupportModal
+                  isOpen={isSupportModalOpen}
+                  onOpenChange={setSupportModalOpen}
+                  user={user}
               />
           )}
         </SidebarProvider>
