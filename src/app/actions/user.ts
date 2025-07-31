@@ -54,13 +54,15 @@ export async function updateUserProfile(values: z.infer<typeof profileSchema>) {
       return { success: false, message: "Usuario no encontrado." };
     }
 
+    // Ensure all fields from the form are being updated
     await updateDoc(userRef, {
-      ...profileData,
+      ...profileData, // This passes all fields: firstName, lastName, phone, address, etc.
       name: `${firstName} ${lastName}`,
     });
 
     revalidatePath("/dashboard", "layout");
     revalidatePath(`/admin/users`);
+    revalidatePath(`/admin/users/page`);
 
 
     const updatedUserSnap = await getDoc(userRef);
