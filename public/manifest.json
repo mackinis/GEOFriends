@@ -1,12 +1,18 @@
 
 {
+  "id": "/",
   "name": "GeoFriends",
   "short_name": "GeoFriends",
   "description": "Conéctate con tu grupo en tiempo real.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0A0A0A",
   "theme_color": "#4FD1C5",
+  "lang": "es-AR",
+  "dir": "ltr",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/icon.png",
@@ -18,5 +24,16 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot1.png",
+      "type": "image/png",
+      "sizes": "1280x720"
+    }
+  ],
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
 }
+
